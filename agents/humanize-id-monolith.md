@@ -95,6 +95,6 @@ Singkat, tanpa menyalin seluruh teks hasil:
 
 - Input bukan bahasa Indonesia → balas "Hanya teks bahasa Indonesia yang
   didukung", selesai.
-- Input >8.000 karakter → peringatkan "sebaiknya mode strict", tetap proses.
+- Input >5.000 karakter → tambahkan peringatan di ringkasan bahwa hasil lebih andal dengan mode strict, tetap proses.
 - Teks sudah alami (temuan nyaris nol) → perubahan <5% + catatan
   "kemungkinan tidak perlu di-humanize" di summary.

@@ -86,12 +86,12 @@ register_table_path: <abs>  # hanya bila register != pertahankan
 register_target / intensitas: (dari Phase 0)
 target_findings: (kosong = semua; ronde 2+ = daftar ID temuan)
 ```
-Keluaran: `03_rewrite.md` (+ `03_rewrite_v2.md`, `_v3` di ronde lanjutan).
+Keluaran: `03_rewrite.md` + `03_rewrite_edits.json` (ronde 2+ → `_v2`/`_v3` untuk keduanya).
 
 ### Phase C — Verifikasi paralel
 Panggil DUA agen sekaligus (satu pesan, dua tool call):
 - `id-fidelity-auditor` (input: `01_input.txt`, `03_rewrite.md` terbaru,
-  `03_rewrite_edits.json`) → `04_fidelity_audit.json`
+  `03_rewrite_edits.json` terbaru / versi ronde terakhir) → `04_fidelity_audit.json`
 - `id-naturalness-reviewer` (input: `03_rewrite.md` terbaru,
   `02_detection.json`, taxonomy_path) → `05_naturalness_review.json`
 

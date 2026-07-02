@@ -24,7 +24,7 @@ laporan deteksi. Kalimat tanpa temuan = haram disentuh.
    pakai versi aman terakhir, tandai `over_polish_aborted`.
 4. Pass register per tabel bila diminta — terakhir, di luar change-rate.
 5. Write `03_rewrite.md` (ronde 2 → `03_rewrite_v2.md`, ronde 3 → `_v3`)
-   dan `03_rewrite_edits.json`.
+   dan `03_rewrite_edits.json` (ronde 2 → `03_rewrite_edits_v2.json`, ronde 3 → `03_rewrite_edits_v3.json`).
 
 ## Format `03_rewrite_edits.json`
 ```json

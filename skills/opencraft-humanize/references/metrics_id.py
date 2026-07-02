@@ -55,7 +55,7 @@ _HEDGING_PHRASES = (
 
 _INITIAL_CONJUNCTIONS = (
     "selain itu", "oleh karena itu", "dengan demikian", "di sisi lain",
-    "lebih lanjut", "namun", "sementara itu", "terlebih lagi",
+    "lebih lanjut", "sementara itu",
 )
 
 # Penanda register percakapan. "aku/kamu" sengaja tidak dimasukkan

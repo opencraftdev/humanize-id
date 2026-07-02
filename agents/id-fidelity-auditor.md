@@ -38,8 +38,8 @@ naturalness-reviewer. Curigai setiap edit; buktikan makna tak berubah.
 ```json
 {
   "versi": "1.0",
-  "putusan": "lolos_penuh",
-  "poin_gagal": [],
+  "putusan": "lolos_bersyarat",
+  "poin_gagal": [6],
   "rollback": [
     {"id_temuan": "T-007", "poin": 6, "bukti": "'mungkin naik' menjadi 'naik' — kadar klaim berubah"}
   ],

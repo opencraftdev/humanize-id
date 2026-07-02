@@ -33,10 +33,10 @@ penulisan ulang justru berlebihan (over-polish).
 ```json
 {
   "versi": "1.0",
-  "grade": "A",
-  "rekomendasi": "terima",
+  "grade": "B",
+  "rekomendasi": "terima_dengan_catatan",
   "temuan_sisa": [
-    {"pola": "H-1", "severity": "S1", "kutipan": "Selain itu, …", "paragraf": 2}
+    {"pola": "H-3", "severity": "S2", "kutipan": "Dalam konteks ini, …", "paragraf": 2}
   ],
   "over_polish": [],
   "target_findings": [],

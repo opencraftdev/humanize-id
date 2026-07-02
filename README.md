@@ -15,16 +15,16 @@ dideteksi per span lalu ditulis ulang secara bedah.
 
 ```
 /plugin marketplace add opencraftdev/humanize-id
-/plugin install opencraft-humanize@opencraft-humanize
+/plugin install opencraft-humanize
 ```
 
-Buka sesi baru, lalu `/opencraft-humanize` — atau cukup bahasa alami:
+Buka sesi baru, lalu `/opencraft-humanize:humanize` — atau cukup bahasa alami:
 "hilangkan gaya AI dari teks ini".
 
 ## Pemakaian
 
 ```
-/opencraft-humanize [teks atau path berkas .txt/.md]
+/opencraft-humanize:humanize [teks atau path berkas .txt/.md]
 ```
 
 Opsi ditulis bahasa alami di akhir argumen:
@@ -37,7 +37,7 @@ Opsi ditulis bahasa alami di akhir argumen:
 | `register` | pertahankan · formal · santai | pertahankan |
 | `--strict` | paksa pipeline 5 agen | mati |
 
-Contoh: `/opencraft-humanize draf.md genre: artikel register: santai`
+Contoh: `/opencraft-humanize:humanize draf.md genre: artikel register: santai`
 
 ## Dua mode
 
@@ -92,11 +92,11 @@ dan angka tidak pernah ikut dikonversi.
 
 ## Metrik kuantitatif
 
-`skills/opencraft-humanize/references/metrics_id.py` (pustaka standar
+`skills/humanize/references/metrics_id.py` (pustaka standar
 Python, tanpa dependensi):
 
 ```bash
-python3 skills/opencraft-humanize/references/metrics_id.py --input teks.txt
+python3 skills/humanize/references/metrics_id.py --input teks.txt
 ```
 
 10 metrik: stdev panjang kalimat, rasio konjungsi pembuka, rasio pasif
@@ -107,7 +107,7 @@ Tes: `python3 tests/test_metrics_id.py`
 
 ## Taksonomi & kontribusi
 
-Sumber kebenaran: `skills/opencraft-humanize/references/taksonomi-ai-tell.md`.
+Sumber kebenaran: `skills/humanize/references/taksonomi-ai-tell.md`.
 Pola baru dipromosikan lewat siklus bukti: kumpulkan sampel keluaran AI per
 genre → bandingkan frekuensi terhadap tulisan manusia → promosikan hanya
 yang rasionya timpang. PR dengan bukti sampel sangat diterima.

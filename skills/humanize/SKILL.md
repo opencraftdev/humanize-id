@@ -1,7 +1,7 @@
 ---
-name: opencraft-humanize
+name: humanize
 version: "1.0.0"
-description: Menghilangkan gaya khas AI (ChatGPT·Claude·Gemini) dari teks bahasa Indonesia tanpa mengubah makna — terjemahanisme, idiom AI ("Kesimpulannya", "Tidak dapat dipungkiri", "Di era digital"), pasif "di-" berlebihan, konjungsi pembuka spam, nominalisasi, ritme seragam, emoji/bullet berlebih. 10 kategori × 40+ pola, severity S1–S3. Mode Fast (1 agen) default; Strict (pipeline 5 agen) via --strict atau otomatis >8.000 karakter. Opsi register formal/santai. Pemicu — "hilangkan gaya AI", "humanize teks ini", "buat tulisan ini lebih natural", "hapus AI-tell", "biar nggak kayak AI", "rapikan tulisan ChatGPT", "humanize indonesia", "/opencraft-humanize". Tindak lanjut ("kategori X saja", "humanize ulang", "turunkan intensitas", "paragraf ini saja") juga skill ini. Koreksi ejaan murni kerjakan langsung; terjemahan dan penulisan konten baru bukan skill ini.
+description: Menghilangkan gaya khas AI (ChatGPT·Claude·Gemini) dari teks bahasa Indonesia tanpa mengubah makna — terjemahanisme, idiom AI ("Kesimpulannya", "Tidak dapat dipungkiri", "Di era digital"), pasif "di-" berlebihan, konjungsi pembuka spam, nominalisasi, ritme seragam, emoji/bullet berlebih. 10 kategori × 40+ pola, severity S1–S3. Mode Fast (1 agen) default; Strict (pipeline 5 agen) via --strict atau otomatis >8.000 karakter. Opsi register formal/santai. Pemicu — "hilangkan gaya AI", "humanize teks ini", "buat tulisan ini lebih natural", "hapus AI-tell", "biar nggak kayak AI", "rapikan tulisan ChatGPT", "humanize indonesia", "/opencraft-humanize:humanize". Tindak lanjut ("kategori X saja", "humanize ulang", "turunkan intensitas", "paragraf ini saja") juga skill ini. Koreksi ejaan murni kerjakan langsung; terjemahan dan penulisan konten baru bukan skill ini.
 ---
 
 # opencraft-humanize — Orkestrator (v1.0)
@@ -33,7 +33,7 @@ opencraft-humanize v1.0 — mode {fast|strict} / run_id: {YYYY-MM-DD-NNN}
 2. Deteksi genre dari 300 karakter pertama: `artikel | laporan | blog |
    surat-resmi` (opsi user menang).
 3. Deteksi register masukan (baku/percakapan) — jalankan
-   `python3 {CLAUDE_PLUGIN_ROOT}/skills/opencraft-humanize/references/metrics_id.py --input _workspace/{run_id}/01_input.txt`
+   `python3 {CLAUDE_PLUGIN_ROOT}/skills/humanize/references/metrics_id.py --input _workspace/{run_id}/01_input.txt`
    dan baca bidang `register`. Skrip gagal → tebak dari teks, lanjut.
 4. Opsi (bahasa alami di akhir argumen), default dalam kurung:
    `genre: artikel|laporan|blog|surat-resmi` (auto) ·

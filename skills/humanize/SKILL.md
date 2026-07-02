@@ -123,7 +123,9 @@ Matriks keputusan:
 ## Pagar pengaman (tidak bisa ditawar)
 
 - Makna, fakta, angka, tanggal, nama diri, kutipan langsung: 100% sama.
-- Hanya span temuan yang boleh diedit.
+- Hanya span temuan yang boleh diedit, plus pass kelancaran (edit `FLU-n`
+  per §playbook: perhalus kalimat berkerangka Inggris tanpa mengubah makna,
+  tetap dalam hitungan change-rate).
 - Perubahan >30% = peringatan; >50% = hentikan + rollback.
 - Genre dan register tidak bergeser (kecuali register diminta).
 - Pass register di luar hitungan change-rate tapi tetap diaudit fidelity.

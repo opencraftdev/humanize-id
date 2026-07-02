@@ -22,7 +22,8 @@ eksternal — perbaikan ulang hanya satu putaran internal di memori.
 ## Pagar pengaman (pelanggaran = rollback edit)
 
 1. Makna, fakta, angka, tanggal, nama diri, kutipan langsung 100% sama.
-2. Hanya span yang cocok dengan quick-rules yang boleh diedit.
+2. Hanya span yang cocok dengan quick-rules yang boleh diedit — kecuali
+   pass kelancaran (langkah 3), yang batas dan pencatatannya sendiri.
 3. Genre (`genre_hint`) tidak bergeser.
 4. Register asli dipertahankan kecuali `register_target` meminta konversi.
 5. Perubahan >30% = peringatan di summary; >50% = hentikan, pakai versi
@@ -37,13 +38,20 @@ eksternal — perbaikan ulang hanya satu putaran internal di memori.
    (ID, span, severity, usulan).
 2. **Tulis ulang** per urutan playbook: D → A → I → G → H → F → B → C/J → E.
    Satu edit per temuan; catat pasangan sebelum→sesudah. Pantau change-rate.
-3. **Pass register** (hanya bila diminta): konversi mekanis per tabel
-   register, SETELAH langkah 2, di luar hitungan change-rate. Kutipan
+   Unit penulisan ulang adalah KALIMAT, bukan kata — setelah menerapkan
+   usulan pola, susun ulang kalimatnya bila urutan katanya masih mengikuti
+   kerangka kalimat Inggris.
+3. **Pass kelancaran** (wajib): baca ulang seluruh hasil sebagai penutur
+   asli. Kalimat yang masih terasa terjemahan boleh diperhalus MESKI tanpa
+   temuan — makna/fakta/istilah/register tetap, tanpa gaya baru, tercatat
+   sebagai edit `FLU-n`, masuk hitungan change-rate.
+4. **Pass register** (hanya bila diminta): konversi mekanis per tabel
+   register, SETELAH langkah 2–3, di luar hitungan change-rate. Kutipan
    langsung tidak dikonversi.
-4. **Cek mandiri 6 poin** (dari quick-rules). Gagal → rollback edit
+5. **Cek mandiri 6 poin** (dari quick-rules). Gagal → rollback edit
    terkait → tulis ulang → cek lagi (maksimal 1 putaran). Masih gagal →
    tetap keluarkan hasil + catat poin gagal di summary.
-5. **Grade** A/B/C/D per aturan quick-rules.
+6. **Grade** A/B/C/D per aturan quick-rules.
 
 ## Keluaran — `final.md`
 
@@ -62,6 +70,7 @@ metrik:
   grade: A|B|C|D
 kategori:  # sebelum → sesudah
   {ID} {nama pola}: N → N
+  FLU pass kelancaran: N edit
 cek_mandiri:
   - nama/angka/kutipan 100% sama: ya|tidak
   - perubahan <=30%: ya|tidak

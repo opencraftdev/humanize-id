@@ -13,11 +13,19 @@ memperbaikinya tanpa merusak".
 3. **H → F** (konjungsi, modifikasi) — penipisan.
 4. **B → C → J** (istilah Inggris, struktur, dekorasi) — tataran dokumen.
 5. **E terakhir** (ritme) — baru bisa dinilai setelah isi kalimat stabil.
+6. **Pass kelancaran** — setelah semua kategori selesai: baca ulang sebagai
+   penutur asli, perhalus kalimat yang masih berkerangka Inggris
+   (lihat §Pass kelancaran di bawah).
 
 ## Aturan edit bedah
 
 - Satu edit = satu span temuan. Jangan menulis ulang kalimat yang tidak
-  mengandung temuan.
+  mengandung temuan — kecuali dalam pass kelancaran (§ di bawah), yang
+  punya aturan dan pencatatannya sendiri.
+- **Unit penulisan ulang adalah KALIMAT, bukan kata.** Mengganti kata per
+  usulan pola lalu meninggalkan urutan kata di sekitarnya = kerangka
+  kalimat Inggris tetap utuh dan hasilnya masih terasa AI. Setelah
+  menerapkan usulan, susun ulang kalimatnya bila perlu.
 - Setiap edit dicatat berpasangan (sebelum → sesudah) untuk audit dan
   kemungkinan rollback per-edit.
 - Bila dua temuan tumpang tindih dalam satu kalimat, tangani sekali jalan
@@ -49,6 +57,31 @@ memperbaikinya tanpa merusak".
 | Pasif (A-1) | rendah | sedang–tinggi | rendah | sedang |
 | Partikel percakapan | 0 | 0 | boleh (register santai) | 0 |
 | Bold (J-1) | 1–2 | sedang | sedang | 0 |
+
+## Pass kelancaran (wajib, sebelum register)
+
+Model bahasa menulis Indonesia dengan kerangka kalimat Inggris — menghapus
+pola per taksonomi saja tidak cukup, karena kalimat tanpa temuan tetap
+membawa urutan kata khas mesin. Karena itu, setelah seluruh edit berbasis
+temuan selesai:
+
+1. Baca ulang seluruh hasil sebagai penutur asli.
+2. Kalimat yang masih terasa terjemahan (urutan kata kaku, keterangan
+   menumpuk di akhir ala Inggris, anak kalimat menggantung) BOLEH
+   diperhalus meski tidak match pola apa pun.
+3. Batasnya keras: makna, fakta, angka, istilah, register, dan genre tetap;
+   tanpa metafora/gaya baru; daftar Jangan-Sentuh tetap berlaku; edit
+   tercatat berpasangan dengan ID `FLU-1`, `FLU-2`, … dan MASUK hitungan
+   change-rate (berbeda dari pass register).
+
+### Kalibrasi rasa (contoh, bukan pola)
+
+- "Teknologi ini memberikan kemampuan kepada pengguna untuk mengelola
+  keuangan mereka dengan lebih efektif."
+  → "Teknologi ini membantu pengguna mengatur keuangan dengan lebih baik."
+- "Proses ini memerlukan waktu yang tidak sebentar dan komitmen yang
+  berkelanjutan dari seluruh tim."
+  → "Prosesnya makan waktu, dan seluruh tim harus berkomitmen terus."
 
 ## Pass register (bila diminta)
 

@@ -20,10 +20,16 @@ laporan deteksi. Kalimat tanpa temuan = haram disentuh.
    terisi), Read detection, Read playbook.
 2. Kerjakan temuan per urutan playbook (D → A → I → G → H → F → B → C/J → E).
    `intensitas: konservatif` = hanya S1; `agresif` = semua + ambang ketat.
+   Unit penulisan ulang adalah KALIMAT, bukan kata — setelah menerapkan
+   usulan pola, susun ulang kalimatnya bila kerangkanya masih Inggris.
 3. Pantau change-rate berjalan; ≥30% → sisakan hanya S1; ≥50% → berhenti,
    pakai versi aman terakhir, tandai `over_polish_aborted`.
-4. Pass register per tabel bila diminta — terakhir, di luar change-rate.
-5. Write `03_rewrite.md` (ronde 2 → `03_rewrite_v2.md`, ronde 3 → `_v3`)
+4. Pass kelancaran (wajib, per §playbook): kalimat yang masih terasa
+   terjemahan boleh diperhalus meski tanpa temuan — makna/fakta/istilah/
+   register tetap, tanpa gaya baru, tercatat sebagai edit dengan
+   `"id_temuan": "FLU-n"`, `"pola": "FLU"`, masuk hitungan change-rate.
+5. Pass register per tabel bila diminta — terakhir, di luar change-rate.
+6. Write `03_rewrite.md` (ronde 2 → `03_rewrite_v2.md`, ronde 3 → `_v3`)
    dan `03_rewrite_edits.json` (ronde 2 → `03_rewrite_edits_v2.json`, ronde 3 → `03_rewrite_edits_v3.json`).
 
 ## Format `03_rewrite_edits.json`
@@ -39,6 +45,12 @@ laporan deteksi. Kalimat tanpa temuan = haram disentuh.
       "pola": "D-1",
       "sebelum": "Kesimpulannya, transformasi digital tidak bisa dihindari.",
       "sesudah": "Transformasi digital tidak bisa dihindari."
+    },
+    {
+      "id_temuan": "FLU-1",
+      "pola": "FLU",
+      "sebelum": "Teknologi ini memberikan kemampuan kepada pengguna untuk mengelola keuangan mereka.",
+      "sesudah": "Teknologi ini membantu pengguna mengatur keuangannya."
     }
   ],
   "dilewati": [

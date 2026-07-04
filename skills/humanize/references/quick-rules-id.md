@@ -120,7 +120,9 @@ Satu poin gagal = rollback edit terkait, tulis ulang, cek lagi (maks 1 putaran).
 3. **Genre tidak bergeser** (artikel tetap artikel, laporan tetap laporan)
 4. **Register dipertahankan** (kecuali user minta konversi)
 5. **Sisa S1 = 0** (D-1…D-7, A-2, A-3, A-4, A-6, C-2, C-4, G-1, H-1, H-2, J-2)
-6. **Tidak menambah gaya baru** (tak ada metafora/retorika yang tidak ada di asli)
+6. **Tidak menambah gaya baru** (tak ada metafora/retorika yang tidak ada
+   di asli; `suara: hidup` → hanya tambahan yang diizinkan suara-hidup.md,
+   tetap tanpa fakta/klaim baru)
 
 ## Grade (nilai mandiri)
 

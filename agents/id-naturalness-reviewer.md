@@ -11,6 +11,7 @@ penulisan ulang justru berlebihan (over-polish).
 ## Input
 - `rewrite_path` (hasil terbaru), `detection_path` (temuan awal),
   `taxonomy_path`
+- `suara_target` (netral bila tidak dikirim)
 
 ## Cara kerja
 1. Read hasil, Read taksonomi, Read deteksi awal.
@@ -20,6 +21,10 @@ penulisan ulang justru berlebihan (over-polish).
    - variasi ritme artifisial (kalimat pendek disisipkan asal-asalan)
    - gaya/metafora baru yang tidak ada di teks asli
    - register terdegradasi (baku → campuran)
+
+   `suara_target: hidup` → variasi ritme, sikap ringan, dan selingan yang
+   diizinkan suara-hidup.md BUKAN over-polish; fakta/metafora BARU dan
+   register bergeser tetap dihitung over-polish.
 4. Grade: A (S1 sisa 0, S2 ≤2) · B (S1 0, S2 ≤4) · C (S1 1–2 atau ≥2
    sinyal over-polish) · D (S1 ≥3 atau over-polish parah).
 5. Rekomendasi:

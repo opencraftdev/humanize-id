@@ -13,7 +13,7 @@
       "name": "opencraft-humanize",
       "source": "./",
       "description": "Skill orkestrator + 5 subagen untuk menghilangkan gaya khas AI dari teks bahasa Indonesia (Fast + Strict).",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "keywords": ["indonesian", "humanize", "ai-detector", "penulisan-ulang"]
     }
   ]

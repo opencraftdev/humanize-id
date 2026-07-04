@@ -35,6 +35,8 @@ Opsi ditulis bahasa alami di akhir argumen:
 | `intensitas` | konservatif · standar · agresif | standar |
 | `severity-min` | S1 · S2 · S3 | S2 |
 | `register` | pertahankan · formal · santai | pertahankan |
+| `suara` | netral · hidup | netral |
+| `contoh-gaya` | path sampel tulisan Anda (.txt/.md) | tidak ada |
 | `--strict` | paksa pipeline 5 agen | mati |
 
 Contoh: `/opencraft-humanize:humanize draf.md genre: artikel register: santai`
@@ -73,6 +75,17 @@ Default **pertahankan**: teks baku keluar baku, santai keluar santai.
 `register: formal` / `register: santai` menjalankan konversi mekanis
 (tabel kata + partikel + afiks) SETELAH humanize — kutipan langsung, nama,
 dan angka tidak pernah ikut dikonversi.
+
+## Opsi suara (anti steril)
+
+Menghapus AI-tell saja sering menghasilkan teks bersih tapi datar — steril
+juga tell. `suara: hidup` mengizinkan variasi ritme, sikap ringan, dan
+selingan alami TANPA fakta/klaim baru (aturan lengkap:
+`skills/humanize/references/suara-hidup.md`; edit `SUA-n` tetap masuk
+hitungan change-rate dan diaudit fidelity di mode strict).
+
+`contoh-gaya: <path>` mengkalibrasi pilihan kata dan ritme ke sampel
+tulisan Anda sendiri — bisa dipakai terpisah dari `suara: hidup`.
 
 ## Grade hasil
 
@@ -116,4 +129,4 @@ yang rasionya timpang. PR dengan bukti sampel sangat diterima.
 
 MIT — lihat [LICENSE](LICENSE).
 
-*Terinspirasi arsitektur [epoko77-ai/im-not-ai](https://github.com/epoko77-ai/im-not-ai) (humanizer bahasa Korea).*
+*Terinspirasi arsitektur [epoko77-ai/im-not-ai](https://github.com/epoko77-ai/im-not-ai) (humanizer bahasa Korea); pass suara & pertanyaan adversarial diadaptasi dari [blader/humanizer](https://github.com/blader/humanizer).*

@@ -1,7 +1,7 @@
 ---
 name: humanize
-version: "1.0.0"
-description: Menghilangkan gaya khas AI (ChatGPT·Claude·Gemini) dari teks bahasa Indonesia tanpa mengubah makna — terjemahanisme, idiom AI ("Kesimpulannya", "Tidak dapat dipungkiri", "Di era digital"), pasif "di-" berlebihan, konjungsi pembuka spam, nominalisasi, ritme seragam, emoji/bullet berlebih. 10 kategori × 40+ pola, severity S1–S3. Mode Fast (1 agen) default; Strict (pipeline 5 agen) via --strict atau otomatis >8.000 karakter. Opsi register formal/santai. Pemicu — "hilangkan gaya AI", "humanize teks ini", "buat tulisan ini lebih natural", "hapus AI-tell", "biar nggak kayak AI", "rapikan tulisan ChatGPT", "humanize indonesia", "/opencraft-humanize:humanize". Tindak lanjut ("kategori X saja", "humanize ulang", "turunkan intensitas", "paragraf ini saja") juga skill ini. Koreksi ejaan murni kerjakan langsung; terjemahan dan penulisan konten baru bukan skill ini.
+version: "1.1.0"
+description: Menghilangkan gaya khas AI (ChatGPT·Claude·Gemini) dari teks bahasa Indonesia tanpa mengubah makna — terjemahanisme, idiom AI ("Kesimpulannya", "Tidak dapat dipungkiri", "Di era digital"), pasif "di-" berlebihan, konjungsi pembuka spam, nominalisasi, ritme seragam, emoji/bullet berlebih. 10 kategori × 40+ pola, severity S1–S3. Mode Fast (1 agen) default; Strict (pipeline 5 agen) via --strict atau otomatis >8.000 karakter. Opsi register formal/santai; opsi suara hidup (anti steril) + contoh-gaya (kalibrasi ke sampel tulisan user). Pemicu — "hilangkan gaya AI", "humanize teks ini", "buat tulisan ini lebih natural", "hapus AI-tell", "biar nggak kayak AI", "rapikan tulisan ChatGPT", "humanize indonesia", "/opencraft-humanize:humanize". Tindak lanjut ("kategori X saja", "humanize ulang", "turunkan intensitas", "paragraf ini saja", "hidupkan suaranya") juga skill ini. Koreksi ejaan murni kerjakan langsung; terjemahan dan penulisan konten baru bukan skill ini.
 ---
 
 # opencraft-humanize — Orkestrator (v1.0)
@@ -39,7 +39,9 @@ opencraft-humanize v1.0 — mode {fast|strict} / run_id: {YYYY-MM-DD-NNN}
    `genre: artikel|laporan|blog|surat-resmi` (auto) ·
    `intensitas: konservatif|standar|agresif` (standar) ·
    `severity-min: S1|S2|S3` (S2) ·
-   `register: pertahankan|formal|santai` (pertahankan) · `--strict`.
+   `register: pertahankan|formal|santai` (pertahankan) ·
+   `suara: netral|hidup` (netral) ·
+   `contoh-gaya: <path .txt/.md sampel tulisan user>` (tidak ada) · `--strict`.
 5. Input bukan bahasa Indonesia → "Hanya teks bahasa Indonesia yang
    didukung." — berhenti.
 
@@ -51,8 +53,11 @@ Panggil agen `humanize-id-monolith` SEKALI via tool Agent dengan input:
 input_path: <abs>/_workspace/{run_id}/01_input.txt
 quick_rules_path: <abs path ke references/quick-rules-id.md>
 register_table_path: <abs path ke references/tabel-register.md>  # hanya bila register != pertahankan
+suara_path: <abs path ke references/suara-hidup.md>  # hanya bila suara: hidup ATAU contoh-gaya diberikan
+contoh_gaya_path: <abs path sampel tulisan user>  # hanya bila diberikan
 genre_hint: artikel|laporan|blog|surat-resmi
 register_target: pertahankan|formal|santai
+suara_target: netral|hidup
 intensitas: konservatif|standar|agresif
 severity_min: S1|S2|S3
 ```
@@ -83,7 +88,9 @@ input_path: …/01_input.txt
 detection_path: …/02_detection.json
 playbook_path: <abs path ke references/playbook-penulisan.md>
 register_table_path: <abs>  # hanya bila register != pertahankan
-register_target / intensitas: (dari Phase 0)
+suara_path: <abs>  # hanya bila suara: hidup ATAU contoh-gaya diberikan
+contoh_gaya_path: <abs>  # hanya bila diberikan
+register_target / suara_target / intensitas: (dari Phase 0)
 target_findings: (kosong = semua; ronde 2+ = daftar ID temuan)
 ```
 Keluaran: `03_rewrite.md` + `03_rewrite_edits.json` (ronde 2+ → `_v2`/`_v3` untuk keduanya).
@@ -93,7 +100,8 @@ Panggil DUA agen sekaligus (satu pesan, dua tool call):
 - `id-fidelity-auditor` (input: `01_input.txt`, `03_rewrite.md` terbaru,
   `03_rewrite_edits.json` terbaru / versi ronde terakhir) → `04_fidelity_audit.json`
 - `id-naturalness-reviewer` (input: `03_rewrite.md` terbaru,
-  `02_detection.json`, taxonomy_path) → `05_naturalness_review.json`
+  `02_detection.json`, taxonomy_path, `suara_target` dari Phase 0)
+  → `05_naturalness_review.json`
 
 Matriks keputusan:
 
@@ -119,6 +127,7 @@ Matriks keputusan:
 | "humanize ulang" | `final.md` lama jadi input baru, strict Phase B |
 | "turunkan/naikkan intensitas" | ulang dari Phase A dengan intensitas baru |
 | "ubah ke santai/formal" | pass register saja pada `final.md` + audit fidelity |
+| "hidupkan suaranya" / "masih kaku/datar" | `final.md` lama jadi input, strict Phase B dengan `suara: hidup` |
 
 ## Pagar pengaman (tidak bisa ditawar)
 
@@ -128,6 +137,9 @@ Matriks keputusan:
   tetap dalam hitungan change-rate).
 - Perubahan >30% = peringatan; >50% = hentikan + rollback.
 - Genre dan register tidak bergeser (kecuali register diminta).
+- `suara: hidup` adalah SATU-SATUNYA izin menambah gaya (ritme, sikap
+  ringan, selingan — per references/suara-hidup.md); fakta/angka/klaim
+  baru tetap haram, edit `SUA-n` masuk hitungan change-rate.
 - Pass register di luar hitungan change-rate tapi tetap diaudit fidelity.
 - Jangan memuat CLAUDE.md/berkas proyek lain untuk menebak opsi.
 
@@ -137,4 +149,5 @@ Matriks keputusan:
 - `references/taksonomi-ai-tell.md` — SSOT 10 kategori (strict)
 - `references/playbook-penulisan.md` — resep penulisan ulang (strict)
 - `references/tabel-register.md` — konversi baku ↔ percakapan
+- `references/suara-hidup.md` — pass suara opsional + kalibrasi contoh gaya
 - `references/metrics_id.py` — metrik kuantitatif (`python3 … --input f.txt`)

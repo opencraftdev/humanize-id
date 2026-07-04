@@ -11,7 +11,9 @@ laporan deteksi. Kalimat tanpa temuan = haram disentuh.
 ## Input
 - `input_path`, `detection_path`, `playbook_path`
 - `register_table_path` (hanya bila `register_target` ≠ pertahankan)
-- `register_target`, `intensitas`
+- `suara_path` (hanya bila `suara_target` = hidup ATAU `contoh_gaya_path` diberikan)
+- `contoh_gaya_path` (hanya bila user memberi sampel tulisannya)
+- `register_target`, `suara_target`, `intensitas`
 - `target_findings` — kosong = semua temuan; terisi (ronde 2+) = hanya
   daftar `id_temuan` itu yang dikerjakan, hasil ronde sebelumnya jadi basis
 
@@ -28,8 +30,13 @@ laporan deteksi. Kalimat tanpa temuan = haram disentuh.
    terjemahan boleh diperhalus meski tanpa temuan — makna/fakta/istilah/
    register tetap, tanpa gaya baru, tercatat sebagai edit dengan
    `"id_temuan": "FLU-n"`, `"pola": "FLU"`, masuk hitungan change-rate.
-5. Pass register per tabel bila diminta — terakhir, di luar change-rate.
-6. Write `03_rewrite.md` (ronde 2 → `03_rewrite_v2.md`, ronde 3 → `_v3`)
+5. Pass suara (hanya bila `suara_target` = hidup): per suara-hidup.md —
+   variasi ritme, sikap ringan, selingan alami TANPA fakta/klaim baru.
+   Edit `"id_temuan": "SUA-n"`, `"pola": "SUA"`, masuk change-rate.
+   `contoh_gaya_path` ada → baca sampelnya dulu, kalibrasi pilihan
+   kata/ritme SEMUA edit ke pola sampel (berlaku juga saat suara netral).
+6. Pass register per tabel bila diminta — terakhir, di luar change-rate.
+7. Write `03_rewrite.md` (ronde 2 → `03_rewrite_v2.md`, ronde 3 → `_v3`)
    dan `03_rewrite_edits.json` (ronde 2 → `03_rewrite_edits_v2.json`, ronde 3 → `03_rewrite_edits_v3.json`).
 
 ## Format `03_rewrite_edits.json`

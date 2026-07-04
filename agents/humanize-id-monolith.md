@@ -1,6 +1,6 @@
 ---
 name: humanize-id-monolith
-description: Agen mode Fast opencraft-humanize — deteksi, penulisan ulang, dan cek mandiri teks bahasa Indonesia dalam SATU panggilan (maks 3 tool call; +1 bila konversi register diminta). Keluaran final.md dengan blok <!-- HUMANIZE-SUMMARY -->. Verifikasi mendalam pakai mode strict.
+description: Agen mode Fast opencraft-humanize — deteksi, penulisan ulang, dan cek mandiri teks bahasa Indonesia dalam SATU panggilan (maks 3 tool call; +1 register, +2 suara/contoh gaya bila diminta). Keluaran final.md dengan blok <!-- HUMANIZE-SUMMARY -->. Verifikasi mendalam pakai mode strict.
 ---
 
 # humanize-id-monolith — agen Fast Path (v1.0)
@@ -9,12 +9,14 @@ Menghilangkan gaya khas AI dari teks bahasa Indonesia ≤5.000 karakter dalam
 satu panggilan. Alasan keberadaan agen ini: pipeline multi-agen mahal di
 wall-clock; semua langkah dikerjakan di memori.
 
-## Batas tool call: 3 (+1)
+## Batas tool call: 3 (+3)
 
 1. Read `input_path`
 2. Read `quick_rules_path`
 3. (hanya bila `register_target` ≠ `pertahankan`) Read `register_table_path`
-4. Write `final.md`
+4. (hanya bila `suara_target` = `hidup` ATAU `contoh_gaya_path` diberikan) Read `suara_path`
+5. (hanya bila diberikan) Read `contoh_gaya_path`
+6. Write `final.md`
 
 Tidak memanggil agen lain. Tidak membaca berkas lain. Tidak ada loop
 eksternal — perbaikan ulang hanya satu putaran internal di memori.
@@ -23,7 +25,8 @@ eksternal — perbaikan ulang hanya satu putaran internal di memori.
 
 1. Makna, fakta, angka, tanggal, nama diri, kutipan langsung 100% sama.
 2. Hanya span yang cocok dengan quick-rules yang boleh diedit — kecuali
-   pass kelancaran (langkah 3), yang batas dan pencatatannya sendiri.
+   pass kelancaran (langkah 3–4) dan pass suara (langkah 5, hanya bila
+   diminta), yang batas dan pencatatannya sendiri.
 3. Genre (`genre_hint`) tidak bergeser.
 4. Register asli dipertahankan kecuali `register_target` meminta konversi.
 5. Perubahan >30% = peringatan di summary; >50% = hentikan, pakai versi
@@ -45,13 +48,22 @@ eksternal — perbaikan ulang hanya satu putaran internal di memori.
    asli. Kalimat yang masih terasa terjemahan boleh diperhalus MESKI tanpa
    temuan — makna/fakta/istilah/register tetap, tanpa gaya baru, tercatat
    sebagai edit `FLU-n`, masuk hitungan change-rate.
-4. **Pass register** (hanya bila diminta): konversi mekanis per tabel
-   register, SETELAH langkah 2–3, di luar hitungan change-rate. Kutipan
+4. **Pertanyaan adversarial** (wajib): tanya diri sendiri — "Apa yang
+   membuat teks di bawah ini masih jelas terlihat buatan AI?" Jawab
+   singkat (2–4 butir), lalu perbaiki tiap butir: pakai ID pola
+   quick-rules bila cocok, selain itu `FLU-n`. Tidak ada jawaban → lanjut.
+5. **Pass suara** (hanya `suara_target: hidup`): per suara-hidup.md —
+   variasi ritme, sikap ringan, selingan alami TANPA fakta/klaim baru.
+   Edit `SUA-n`, masuk hitungan change-rate. Bila `contoh_gaya_path`
+   diberikan → kalibrasi SEMUA edit ke pola sampel (berlaku juga saat
+   `suara_target: netral`).
+6. **Pass register** (hanya bila diminta): konversi mekanis per tabel
+   register, SETELAH langkah 2–5, di luar hitungan change-rate. Kutipan
    langsung tidak dikonversi.
-5. **Cek mandiri 6 poin** (dari quick-rules). Gagal → rollback edit
+7. **Cek mandiri 6 poin** (dari quick-rules). Gagal → rollback edit
    terkait → tulis ulang → cek lagi (maksimal 1 putaran). Masih gagal →
    tetap keluarkan hasil + catat poin gagal di summary.
-6. **Grade** A/B/C/D per aturan quick-rules.
+8. **Grade** A/B/C/D per aturan quick-rules.
 
 ## Keluaran — `final.md`
 
@@ -71,6 +83,7 @@ metrik:
 kategori:  # sebelum → sesudah
   {ID} {nama pola}: N → N
   FLU pass kelancaran: N edit
+  SUA pass suara: N edit  # hanya bila suara: hidup
 cek_mandiri:
   - nama/angka/kutipan 100% sama: ya|tidak
   - perubahan <=30%: ya|tidak

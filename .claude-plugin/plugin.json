@@ -1,6 +1,6 @@
 {
   "name": "opencraft-humanize",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Menghilangkan gaya khas AI dari teks bahasa Indonesia tanpa mengubah makna — mode Fast (1 agen) + Strict (pipeline 5 agen). 10 kategori × 40+ pola AI-tell.",
   "author": {
     "name": "opencraftdev"

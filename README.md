@@ -1,132 +1,135 @@
-# opencraft-humanize — Penghilang Gaya AI untuk Bahasa Indonesia v1.0
+# opencraft-humanize — AI-Style Remover for Indonesian v1.1
 
-Plugin Claude Code yang menghilangkan "gaya khas AI" (ChatGPT · Claude ·
-Gemini) dari teks bahasa Indonesia — **tanpa mengubah makna satu fakta pun**.
-Yang diubah hanya gaya, ritme, dan pilihan kata.
+A Claude Code plugin that removes the "AI voice" (ChatGPT · Claude ·
+Gemini) from Indonesian text — **without changing a single fact**. Only
+style, rhythm, and word choice are touched.
 
-Terjemahanisme ("melakukan pembelian", "yang mana", pasif "di-" berlebihan),
-idiom khas AI ("Kesimpulannya,", "Tidak dapat dipungkiri", "Di era digital
-yang semakin berkembang"), konjungsi pembuka spam ("Selain itu… Oleh karena
-itu…"), nominalisasi berantai, ritme kalimat seragam, emoji/bullet
-berlebihan — **10 kategori × 40+ pola**, diklasifikasi severity S1/S2/S3,
-dideteksi per span lalu ditulis ulang secara bedah.
+Translationese ("melakukan pembelian", "yang mana", overused "di-"
+passives), AI signature idioms ("Kesimpulannya,", "Tidak dapat dipungkiri",
+"Di era digital yang semakin berkembang"), sentence-opening connector spam
+("Selain itu… Oleh karena itu…"), chained nominalizations, uniform sentence
+rhythm, emoji/bullet overload — **10 categories × 40+ patterns**, classified
+by severity S1/S2/S3, detected per span and rewritten surgically.
 
-## Instalasi
+## Installation
 
 ```
 /plugin marketplace add opencraftdev/humanize-id
 /plugin install opencraft-humanize
 ```
 
-Buka sesi baru, lalu `/opencraft-humanize:humanize` — atau cukup bahasa alami:
-"hilangkan gaya AI dari teks ini".
+Open a new session, then `/opencraft-humanize:humanize` — or just plain
+language: "hilangkan gaya AI dari teks ini".
 
-## Pemakaian
+## Usage
 
 ```
-/opencraft-humanize:humanize [teks atau path berkas .txt/.md]
+/opencraft-humanize:humanize [text or path to a .txt/.md file]
 ```
 
-Opsi ditulis bahasa alami di akhir argumen:
+Options are written in natural language at the end of the arguments:
 
-| Opsi | Nilai | Default |
+| Option | Values | Default |
 |---|---|---|
-| `genre` | artikel · laporan · blog · surat-resmi | deteksi otomatis |
+| `genre` | artikel · laporan · blog · surat-resmi | auto-detect |
 | `intensitas` | konservatif · standar · agresif | standar |
 | `severity-min` | S1 · S2 · S3 | S2 |
 | `register` | pertahankan · formal · santai | pertahankan |
 | `suara` | netral · hidup | netral |
-| `contoh-gaya` | path sampel tulisan Anda (.txt/.md) | tidak ada |
-| `--strict` | paksa pipeline 5 agen | mati |
+| `contoh-gaya` | path to a sample of your own writing (.txt/.md) | none |
+| `--strict` | force the 5-agent pipeline | off |
 
-Contoh: `/opencraft-humanize:humanize draf.md genre: artikel register: santai`
+Example: `/opencraft-humanize:humanize draft.md genre: artikel register: santai`
 
-## Dua mode
+## Two modes
 
-**Fast (default, ≤5.000 karakter, ~3 menit)** — satu agen
-(`humanize-id-monolith`) mendeteksi, menulis ulang, dan mengecek mandiri
-dalam satu panggilan. Keluaran: `_workspace/{run}/final.md` berisi teks hasil
-plus blok `<!-- HUMANIZE-SUMMARY -->` (metrik, grade, sorotan) yang tidak
-tampil saat markdown dirender.
+**Fast (default, ≤5,000 characters, ~3 min)** — a single agent
+(`humanize-id-monolith`) detects, rewrites, asks itself the adversarial
+question ("what still makes this obviously AI?"), and self-checks in one
+call. Output: `_workspace/{run}/final.md` containing the result plus a
+`<!-- HUMANIZE-SUMMARY -->` block (metrics, grade, highlights) that stays
+invisible when the markdown is rendered.
 
-**Strict (`--strict`, otomatis untuk >8.000 karakter)** — pipeline 5 agen:
+**Strict (`--strict`, automatic for >8,000 characters)** — 5-agent pipeline:
 
 ```
 01_input.txt
    ↓ [id-ai-tell-detector]      → 02_detection.json
-   ↓ [id-style-rewriter]        → 03_rewrite.md (maks 3 ronde)
-   ↓ paralel:
-   ├ [id-fidelity-auditor]      → 04_fidelity_audit.json (13 poin makna)
-   └ [id-naturalness-reviewer]  → 05_naturalness_review.json (sisa + over-polish)
-   ↓ putusan orkestrator        → final.md  (atau tahan-untuk-manusia)
+   ↓ [id-style-rewriter]        → 03_rewrite.md (max 3 rounds)
+   ↓ in parallel:
+   ├ [id-fidelity-auditor]      → 04_fidelity_audit.json (13-point meaning check)
+   └ [id-naturalness-reviewer]  → 05_naturalness_review.json (residual tells + over-polish)
+   ↓ orchestrator verdict       → final.md  (or hold-for-human)
 ```
 
-## Empat pagar pengaman
+## Four guardrails
 
-1. **Makna tidak berubah** — fakta, angka, nama, kutipan 100% asli.
-2. **Berbasis bukti** — hanya span temuan yang diedit.
-3. **Genre & register tetap** — artikel tetap artikel; baku tetap baku
-   (kecuali `register:` diminta).
-4. **Anti over-polish** — perubahan >30% peringatan, >50% dihentikan paksa.
+1. **Meaning never changes** — facts, numbers, names, quotes stay 100% intact.
+2. **Evidence-based** — only spans matched to a finding get edited.
+3. **Genre & register preserved** — an article stays an article; formal
+   stays formal (unless `register:` is requested).
+4. **Anti over-polish** — >30% change raises a warning, >50% force-aborts.
 
-## Opsi register
+## Register option
 
-Default **pertahankan**: teks baku keluar baku, santai keluar santai.
-`register: formal` / `register: santai` menjalankan konversi mekanis
-(tabel kata + partikel + afiks) SETELAH humanize — kutipan langsung, nama,
-dan angka tidak pernah ikut dikonversi.
+Default is **pertahankan** (preserve): formal text comes out formal, casual
+comes out casual. `register: formal` / `register: santai` runs a mechanical
+conversion (word + particle + affix tables) AFTER humanizing — direct
+quotes, names, and numbers are never converted.
 
-## Opsi suara (anti steril)
+## Voice option (anti-sterile)
 
-Menghapus AI-tell saja sering menghasilkan teks bersih tapi datar — steril
-juga tell. `suara: hidup` mengizinkan variasi ritme, sikap ringan, dan
-selingan alami TANPA fakta/klaim baru (aturan lengkap:
-`skills/humanize/references/suara-hidup.md`; edit `SUA-n` tetap masuk
-hitungan change-rate dan diaudit fidelity di mode strict).
+Removing AI tells alone often yields text that is clean but flat — sterile
+is a tell too. `suara: hidup` permits rhythm variation, mild stance, and
+natural asides WITHOUT new facts or claims (full rules:
+`skills/humanize/references/suara-hidup.md`; `SUA-n` edits still count
+toward the change rate and are fidelity-audited in strict mode).
 
-`contoh-gaya: <path>` mengkalibrasi pilihan kata dan ritme ke sampel
-tulisan Anda sendiri — bisa dipakai terpisah dari `suara: hidup`.
+`contoh-gaya: <path>` calibrates word choice and rhythm to a sample of
+your own writing — usable independently of `suara: hidup`.
 
-## Grade hasil
+## Result grades
 
-| Grade | Arti |
+| Grade | Meaning |
 |---|---|
-| A | S1 sisa 0, S2 ≤2, perubahan 10–25%, cek mandiri 6/6 |
-| B | S1 sisa 0, S2 ≤4 — masih layak terbit |
-| C | S1 sisa 1–2 — disarankan jalankan `--strict` |
-| D | S1 ≥3 atau perubahan >50% — perlu tinjauan manusia |
+| A | 0 residual S1, ≤2 S2, 10–25% change, self-check 6/6 |
+| B | 0 residual S1, ≤4 S2 — still publishable |
+| C | 1–2 residual S1 — running `--strict` is recommended |
+| D | ≥3 S1 or >50% change — needs human review |
 
-## Tindak lanjut (bahasa alami saja)
+## Follow-ups (natural language only)
 
-- "kategori terjemahanisme saja yang diulang"
-- "paragraf kedua saja"
-- "humanize ulang" (ronde kedua atas hasil)
-- "turunkan intensitas" / "ubah ke santai"
+- "kategori terjemahanisme saja yang diulang" (redo only the translationese category)
+- "paragraf kedua saja" (second paragraph only)
+- "humanize ulang" (second round on the result)
+- "turunkan intensitas" / "ubah ke santai" (lower intensity / switch to casual)
+- "hidupkan suaranya" (re-run with `suara: hidup`)
 
-## Metrik kuantitatif
+## Quantitative metrics
 
-`skills/humanize/references/metrics_id.py` (pustaka standar
-Python, tanpa dependensi):
+`skills/humanize/references/metrics_id.py` (Python standard library only,
+zero dependencies):
 
 ```bash
-python3 skills/humanize/references/metrics_id.py --input teks.txt
+python3 skills/humanize/references/metrics_id.py --input text.txt
 ```
 
-10 metrik: stdev panjang kalimat, rasio konjungsi pembuka, rasio pasif
-"di-", densitas nominalisasi, "melakukan + nomina", idiom khas AI, hedging,
-densitas "hal ini", keragaman leksikal, deteksi register.
+10 metrics: sentence-length stdev, opening-conjunction ratio, "di-" passive
+ratio, nominalization density, "melakukan + noun", AI signature idioms,
+hedging, "hal ini" density, lexical diversity, register detection.
 
-Tes: `python3 tests/test_metrics_id.py`
+Tests: `python3 tests/test_metrics_id.py`
 
-## Taksonomi & kontribusi
+## Taxonomy & contributing
 
-Sumber kebenaran: `skills/humanize/references/taksonomi-ai-tell.md`.
-Pola baru dipromosikan lewat siklus bukti: kumpulkan sampel keluaran AI per
-genre → bandingkan frekuensi terhadap tulisan manusia → promosikan hanya
-yang rasionya timpang. PR dengan bukti sampel sangat diterima.
+Source of truth: `skills/humanize/references/taksonomi-ai-tell.md`.
+New patterns are promoted through an evidence cycle: collect AI-output
+samples per genre → compare frequencies against human writing → promote
+only patterns with lopsided ratios. PRs with sample evidence are very
+welcome.
 
-## Lisensi
+## License
 
-MIT — lihat [LICENSE](LICENSE).
+MIT — see [LICENSE](LICENSE).
 
-*Terinspirasi arsitektur [epoko77-ai/im-not-ai](https://github.com/epoko77-ai/im-not-ai) (humanizer bahasa Korea); pass suara & pertanyaan adversarial diadaptasi dari [blader/humanizer](https://github.com/blader/humanizer).*
+*Architecture inspired by [epoko77-ai/im-not-ai](https://github.com/epoko77-ai/im-not-ai) (Korean humanizer); voice pass & adversarial question adapted from [blader/humanizer](https://github.com/blader/humanizer).*
